@@ -287,7 +287,7 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
         if not self.loginSucCount:
             self.__startListenEventsBeforLogin()
         checkResult = self.check()
-        msg += u"是否需要验证码:" + str(not checkResult) + "\n"
+        msg += u"是否需要验证码:" + unicode(not checkResult) + "\n"
         if not checkResult:
             msg = message.BaseMsg()
             msg.msg = checkResult
@@ -295,7 +295,7 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
             while self.needVerifyCode: pass
 
         loginResult = super(WebQQClient, self).login()
-        msg += u"登录结果: %s"%(str(loginResult))
+        msg += u"登录结果: %s"%(unicode(loginResult))
         self.addLogMsg(msg)
 
         if loginResult != True:
