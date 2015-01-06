@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module qqapi</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>qqapi</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///D:/documents/program/pythonapplication/webqq/webqqsdk%20for%20python/webqqsdk/webqqclient/qqapi.py">d:\documents\program\pythonapplication\webqq\webqqsdk for python\webqqsdk\webqqclient\qqapi.py</a></font></td></tr></table>
+    <p><tt>#coding=UTF8</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="entity.html">entity</a><br>
+<a href="utils.httpserver.html">utils.httpserver</a><br>
+<a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="random.html">random</a><br>
+<a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="thread.html">thread</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top><a href="urllib.html">urllib</a><br>
+<a href="utils.webqq_encypt.html">utils.webqq_encypt</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="qqapi.html#WebQQ">WebQQ</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="WebQQ">class <strong>WebQQ</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="WebQQ-__init__"><strong>__init__</strong></a>(self, qq, pwd)</dt></dl>
+
+<dl><dt><a name="WebQQ-allowAddFriend"><strong>allowAddFriend</strong></a>(self, qq, mname)</dt><dd><tt>#同意别人添加自己好友<br>
+#参数&nbsp;别人的QQ号&nbsp;备注</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-changeGroupMessageFilter"><strong>changeGroupMessageFilter</strong></a>(self, group_uin<font color="#909090">=''</font>, state<font color="#909090">=0</font>, all_state<font color="#909090">=0</font>)</dt><dd><tt>@param&nbsp;group_uin:&nbsp;群临时号码<br>
+@param&nbsp;state:&nbsp;0&nbsp;接收并提醒，1&nbsp;接收不提醒，2&nbsp;不接受<br>
+@param&nbsp;all_state:&nbsp;0&nbsp;使用每群自身的消息设置，1&nbsp;所有群接收并提示，&nbsp;2&nbsp;接收不提示，3&nbsp;不接收</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-check"><strong>check</strong></a>(self)</dt><dd><tt>检查QQ是否需要验证码<br>
+@rtype:bool</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-deleteGroupMember"><strong>deleteGroupMember</strong></a>(self, group_number, qq_number)</dt><dd><tt>@return&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;成功<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;3&nbsp;成员不存在<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;7&nbsp;权限不足<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;11&nbsp;群号错误<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;-1&nbsp;网络错误</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-getDicFromList"><strong>getDicFromList</strong></a>(self, dic_list, key, value)</dt></dl>
+
+<dl><dt><a name="WebQQ-getFriends"><strong>getFriends</strong></a>(self)</dt><dd><tt>例子：{"retcode":0,"result":{"friends":[{"flag":20,"uin":597845441,"categories":5},{"flag":20,"uin":769476381,"categories":5}],"marknames":[{"uin":3215442946,"markname":"林彬YAN","type":0}],"categories":[{"index":0,"sort":0,"name":"yi~~呀咿呀~"},{"index":5,"sort":5,"name":"&nbsp;孤单相伴"}],"vipinfo":[{"vip_level":0,"u":597845441,"is_vip":0},{"vip_level":2,"u":769476381,"is_vip":1}],"info":[{"face":0,"flag":20972032,"nick":"林雨辰的那只神经喵喵","uin":597845441},{"face":288,"flag":20972102,"nick":"&nbsp;☆紫梦璃★","uin":769476381}]}}<br>
+@rtype:&nbsp;dict</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-getGroupInfo"><strong>getGroupInfo</strong></a>(self, gCode)</dt><dd><tt>{"retcode":0,"result":{"stats":[{"client_type":41,"uin":379450326,"stat":10},{"client_type":1,"uin":769476381,"stat":10}],"minfo":[{"nick":"神经喵咪","province":"","gender":"female","uin":379450326,"country":"","city":""},{"nick":"&nbsp;☆紫梦璃★","province":"","gender":"female","uin":769476381,"country":"梵蒂冈","city":""}],"ginfo":{"face":0,"memo":"","class":10028,"fingermemo":"","code":1597786235,"createtime":1362561179,"flag":1090519041,"level":0,"name":"神经","gid":3181386224,"owner":769476381,"members":[{"muin":379450326,"mflag":4},{"muin":769476381,"mflag":196}],"option":2},"vipinfo":[{"vip_level":0,"u":379450326,"is_vip":0},{"vip_level":2,"u":769476381,"is_vip":1}]}}<br>
+&nbsp;<br>
+@rtype:&nbsp;dict</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-getGroups"><strong>getGroups</strong></a>(self)</dt><dd><tt>{"retcode":0,"result":{"gmasklist":[{"gid":1000,"mask":3},{"gid":3181386224,"mask":0},{"gid":3063251357,"mask":2}],"gnamelist":[{"flag":1090519041,"name":"神经","gid":3181386224,"code":1597786235},{"flag":16777217,"name":"哭泣","gid":3063251357,"code":3462805735}],"gmarklist":[]}}<br>
+&nbsp;<br>
+mask:&nbsp;群消息接收设置,如果为空，则使用群本身消息设置并每个群都接收<br>
+code:gcode<br>
+gid:&nbsp;不明白<br>
+@return:&nbsp;json<br>
+@rtype:&nbsp;dict</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-getMsg"><strong>getMsg</strong></a>(self)</dt><dd><tt>获取消息，返回json</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-getOnlineFriedns"><strong>getOnlineFriedns</strong></a>(self)</dt><dd><tt>例子：{"retcode":0,"result":[{"uin":597845441,"status":"online","client_type":1},{"uin":769476381,"status":"online","client_type":1}]}<br>
+@rtype:&nbsp;dict</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-handleAddGroupMsg"><strong>handleAddGroupMsg</strong></a>(self, reqUin, groupUin, msg<font color="#909090">=''</font>, allow<font color="#909090">=True</font>)</dt><dd><tt>#处理别人加群消息（必须是管理员才有效）<br>
+#参数&nbsp;reqUin&nbsp;加群者的临时号码，&nbsp;groupUIn&nbsp;加的群的临时号码，msg&nbsp;拒绝理由，allow&nbsp;True是同意加群，False是不同意</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-inputVerifyCode"><strong>inputVerifyCode</strong></a>(self, code)</dt><dd><tt>@param&nbsp;code:验证码<br>
+验证码在当前目录下</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-login"><strong>login</strong></a>(self)</dt><dd><tt>@return&nbsp;True:登录成功<br>
+@return&nbsp;dic:&nbsp;登录失败的原因</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-logout"><strong>logout</strong></a>(self)</dt><dd><tt>@return:&nbsp;是否登出成功<br>
+@rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-quitGroup"><strong>quitGroup</strong></a>(self, gcode)</dt></dl>
+
+<dl><dt><a name="WebQQ-sendMsg2Buddy"><strong>sendMsg2Buddy</strong></a>(self, buddyId, content, fontStyle<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="WebQQ-sendMsg2Group"><strong>sendMsg2Group</strong></a>(self, groupId, content, fontStyle<font color="#909090">=None</font>)</dt><dd><tt>groupId:群uin<br>
+content:&nbsp;要发送的内容,&nbsp;unicode编码<br>
+fontStyle:&nbsp;entity.FontStyle实例</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-sendTempMsgFromGroup"><strong>sendTempMsgFromGroup</strong></a>(self, groupId, buddyId, content, fontStyle<font color="#909090">=None</font>)</dt><dd><tt>groupId:&nbsp;群uin<br>
+buddyId:&nbsp;对方uin<br>
+content:&nbsp;要发送的内容，Unicode编码<br>
+fontStyle:&nbsp;entity.FontStyle</tt></dd></dl>
+
+<dl><dt><a name="WebQQ-uin2number"><strong>uin2number</strong></a>(self, uin, type<font color="#909090">=1</font>)</dt><dd><tt>uin转真实QQ号<br>
+uin:&nbsp;int,临时号码<br>
+type:&nbsp;int,&nbsp;1&nbsp;好友uin转QQ，4&nbsp;群uin转群号<br>
+@rtype:&nbsp;ink</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>curpath</strong> = r'D:\Documents\Program\PythonApplication\webqq\webqqsdk for python\webqqsdk\webqqclient'<br>
+<strong>encypt</strong> = &lt;utils.webqq_encypt.Encypt instance&gt;<br>
+<strong>parpath</strong> = r'D:\Documents\Program\PythonApplication\webqq\webqqsdk for python\webqqsdk'</td></tr></table>
+</body></html>
