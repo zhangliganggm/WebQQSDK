@@ -85,6 +85,9 @@ class WebQQ(object):
 
 #        url = "https://ssl.ptlogin2.qq.com/check?uin="+self.qq+"&appid=1003903&js_ver=10074&js_type=0&login_sig=VoWX*m26Eywvl6cStE-l5XdY4LzvWfgaEv9lHrCpnPK1jJXrqa1uSPitTP3PW05u&u1=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html&r=0.3267894003605193"
         data = self.http.connect(url)
+        if not data:
+            return False
+
 #        print data
         tmp=self.__getPtui("ptui_checkVC",data)
 #        print tmp[2]
@@ -117,14 +120,16 @@ class WebQQ(object):
 
     def __login1(self):
         """
-        @rtype:bool
+        成功返回True
+        失败返回失败原因(str)
         """
 
         p = encypt.encyptPwd(self.pwd,self.verifyCode,self.uin)
 
-        self.http.connect("https://ssl.ptlogin2.qq.com/login?u="+self.qq+"&p="+p+"&verifycode="+self.verifyCode+"&webqq_type=10&remember_uin=1&login2qq=1&aid=1003903&u1=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=2-30-59555&mibao_css=m_webqq&t=1&g=1&js_type=0&js_ver=10039&login_sig=hjVAqjuh862EOt*vVy5QVVDwSTrs*pRmlJsXN3vJbIfIEG7d8u4dxMcJ8i9h65zR")
+        data = self.http.connect("https://ssl.ptlogin2.qq.com/login?u="+self.qq+"&p="+p+"&verifycode="+self.verifyCode+"&webqq_type=10&remember_uin=1&login2qq=1&aid=1003903&u1=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=2-30-59555&mibao_css=m_webqq&t=1&g=1&js_type=0&js_ver=10039&login_sig=hjVAqjuh862EOt*vVy5QVVDwSTrs*pRmlJsXN3vJbIfIEG7d8u4dxMcJ8i9h65zR")
         self.needVerifyCode = False
-        data = self.http.res_content
+        if not data:
+            return u"网络错误!"
 #        print data
         ptui = self.__getPtui("ptuiCB",data)
         if ptui[0] == "0":
@@ -150,7 +155,8 @@ class WebQQ(object):
 
     def __login2(self):
         """
-        @rtype:bool
+        成功返回True
+        失败返回失败原因(str)
         """
         url="http://d.web2.qq.com/channel/login2"
         self.http.headers["Referer"] = "http://d.web2.qq.com/proxy.html?v=20110331002&callback=1&id=2"
@@ -162,7 +168,9 @@ class WebQQ(object):
         a = {"r":a,"clientid":self.clientid,"psessionid":"null"}
 #        a = "r=%s"%(a)
 #        print a
-        self.http.connect(url,a)
+        data = self.http.connect(url,a)
+        if not data:
+            return u"网络错误!"
 #        print self.http.res_content
         result = json.loads(self.http.res_content)
 #        print result
@@ -374,7 +382,7 @@ class WebQQ(object):
         """
 
 #        content = "   \\r\\n" + content
-        content = "   \\n" + content
+#        content = "   \\n" + content
 #        content = repr(content)[1:].strip("'").replace("\\n\\n","\\n")
 #        print content
 #        print repr(content)
