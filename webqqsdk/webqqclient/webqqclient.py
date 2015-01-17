@@ -289,9 +289,9 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
         checkResult = self.check()
         msg += u"是否需要验证码:" + unicode(not checkResult) + "\n"
         if not checkResult:
-            msg = message.BaseMsg()
-            msg.msg = checkResult
-            self.__needVerifyCodeMsgs.append(msg)
+            _msg = message.BaseMsg()
+            _msg.msg = checkResult
+            self.__needVerifyCodeMsgs.append(_msg)
             while self.needVerifyCode: pass
 
         loginResult = super(WebQQClient, self).login()
@@ -370,11 +370,11 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
         @rtype: entity.Group实例
         """
 
-        if self.qqUser.groups.has_key(uin):
-            return self.qqUser.groups[uin]
-        else:
-            self.getGroups()
-            return self.qqUser.groups[uin]
+        for i in range(6):
+            if self.qqUser.groups.has_key(uin):
+                return self.qqUser.groups[uin]
+            else:
+                self.getGroups()
 
     def getFriendByUin(self,uin):
         """
@@ -463,6 +463,11 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
         members = []
         if data["retcode"] == 0:
             data = data["result"]
+            # 如果有群名片的话，result里面会有cards这个key
+            if data.has_key("cards"):
+                cards = data["cards"] # [{muin: 3764013857, card: "呵呵"}]
+            else:
+                cards = []
             group.createTime = data["ginfo"]["createtime"]
             creator = data["ginfo"]["owner"]
 #            print data
@@ -475,6 +480,7 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
                 member.nick = self.__getValueFromDic(uin, data["minfo"], "uin", "nick")
                 member.isAdmin = not ((self.__getValueFromDic(uin, data["ginfo"]["members"], "muin", "mflag"))%2 == 0)
                 member.status = self.__getValueFromDic(uin,data["stats"],"uin","stat")
+                member.card = self.__getValueFromDic(uin,cards,"muin","card")
                 member.uin = uin
                 member.getQQ = self.uin2number
                 members.append(member)
@@ -483,7 +489,8 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
 
 
     def __getValueFromDic(self,standardValue,dicList,standardKey,needKey):
-
+        """
+        """
         for i in dicList:
             if standardValue == i[standardKey]:
                 return i[needKey]
@@ -668,6 +675,8 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
 #                    uin = long(uin)
                     memberUin = int(data["send_uin"])
                     group = self.getGroupByUin(uin)
+                    if not group:
+                        continue
 #                    print group
 #                    self.getGroupMembers(uin)
 #                    print "group",group
@@ -730,7 +739,7 @@ class WebQQClient(qqapi.WebQQ,threading.Thread):
 #                        uin = long(uin)
                         msg.uin = uin
                         msg.qq = data["account"]
-                        msg.msg = data["msg"]
+                        msg.msg = u"别人添加我为好友"
                         msg.allow = 0
 
                         self.__addMeFiendMsgs.append(msg)

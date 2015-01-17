@@ -38,6 +38,7 @@ class WebQQ(object):
 
         self.headers = {}
         self.http = httpserver.Http()
+        self.http.set_tryagain(3)
 #        self.http = httpserver.Http(cookie_path="webqq_cookie.txt")
 #        self.http.headers = self.headers
         self.clientid = "605644"
@@ -143,7 +144,8 @@ class WebQQ(object):
             url = ptui[2]
 #            url = url.split("url=")[1]
 #            url = urllib.unquote(url)
-            self.http.connect(url)
+            if not self.http.connect(url):
+                return u"网络错误"
 #            print self.http.resUrl
 #            print self.http.res_content
             self.gtk = str(self.gtk)
@@ -211,6 +213,8 @@ class WebQQ(object):
         """
         url =  "http://d.web2.qq.com/channel/logout2?ids=&clientid=" + self.clientid + "&psessionid=" + self.psessionid + "&t=" + str(int(time.time()))
         data = self.http.connect(url)
+        if not data:
+            return False
         data = json.loads(data)
 #        print data
         if data["result"] == "ok":
@@ -248,6 +252,8 @@ class WebQQ(object):
         a = json.dumps(a)
         data = {"r":a}
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
         return data
         if data["retcode"] == 0:
@@ -266,6 +272,8 @@ class WebQQ(object):
         """
         url = "http://d.web2.qq.com/channel/get_online_buddies2?clientid="+self.clientid+"&psessionid="+self.psessionid+"&t=1376715224899"
         data = self.http.connect(url)
+        if not data:
+            return None
         data = json.loads(data)
         return data
 
@@ -308,6 +316,8 @@ class WebQQ(object):
         a = json.dumps(r)
         data = {"r":a}
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
         return data
 #        print data
@@ -333,6 +343,8 @@ class WebQQ(object):
         """
         url = "http://s.web2.qq.com/api/get_group_info_ext2?gcode="+str(gCode)+"&vfwebqq="+self.vfwebqq+"&t=1376720992778"
         data = self.http.connect(url)
+        if not data:
+            return None
         data = json.loads(data)
         return data
         if data["retcode"] == 0:
@@ -393,6 +405,8 @@ class WebQQ(object):
 
         url = "http://d.web2.qq.com/channel/get_c2cmsg_sig2?id=%s&to_uin=%s&service_type=0&clientid=%s&psessionid=%s&t=%d"%(groupId,buddyId,self.clientid,self.psessionid,int(time.time() * 100))
         data = self.http.connect(url)
+        if not data:
+            return ""
         data = json.loads(data)
         if data["retcode"] != 0:
             return ""
@@ -419,6 +433,8 @@ class WebQQ(object):
         data={"clientid":self.clientid,"psessionid":self.psessionid,"r":a}
 
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
 #        print data
         return data
@@ -476,6 +492,8 @@ class WebQQ(object):
         data={"clientid":self.clientid,"psessionid":self.psessionid,"r":a}
 #        open("test.txt","w").write(urllib.urlencode(data))
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
 #        print data
         return data
@@ -500,6 +518,8 @@ class WebQQ(object):
         a=json.dumps(a)
         data={"clientid":self.clientid,"psessionid":self.psessionid,"r":a}
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
 #        print data
         url = "http://tj.qstatic.com/getlog?qqweb2=%s$groupmask$bottom$send&t=1377456226064"%self.qq
@@ -516,6 +536,8 @@ class WebQQ(object):
         r = json.dumps(r)
         data = {"r":r}
         data = self.http.connect(url,data)
+        if not data:
+            return None
         data = json.loads(data)
         return data
 
@@ -531,6 +553,8 @@ class WebQQ(object):
             opType = 3
         url = "http://d.web2.qq.com/channel/op_group_join_req?group_uin=%s&req_uin=%s&msg=%s&op_type=%d&clientid=%s&psessionid=%s"%(groupUin,reqUin,msg,opType,self.clientid,self.psessionid)
         data = self.http.connect(url)
+        if not data:
+            return None
         return json.loads(data)
 
     def deleteGroupMember(self, group_number, qq_number):
@@ -566,6 +590,8 @@ class WebQQ(object):
         r = json.dumps({"gcode":gcode,"vfwebqq":self.vfwebqq})
         post_data = {"r": r}
         res = self.http.connect(url, post_data)
+        if not res:
+            return None
         result = json.loads(res)
         return result
 
@@ -611,6 +637,8 @@ class WebQQ(object):
 #        print post_data
 #        print urllib.urlencode(post_data)
         result = self.http.connect(url,post_data)
+        if not result:
+            return -1
         result = json.loads(result)
         return result["retcode"]
 
