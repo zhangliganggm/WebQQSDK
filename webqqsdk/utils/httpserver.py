@@ -35,7 +35,7 @@ class RedirctHandler(urllib2.HTTPRedirectHandler):
         """
 
         if 'Location' in headers and ':80/?ver=' in headers['Location']:
-           raise GetImagePath(headers['Location'])
+           raise QQImagePath(headers['Location'])
 
 class Http:
     
