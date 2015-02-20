@@ -3,22 +3,47 @@ __doc__ = """
 httpserver is a convenient module to operate http protocol
 @author:http://neverlike.net
 @version:1.3
+
+@author:http://www.acee-studio.com
+@version:0.1(Ace Version)
+@info: 0.1(Ace Version)Change the Class structure for Pyqt.
+       if you not use pyqt you can use old version
 """
 
 import urllib2
 import cookielib
 import urllib
 import re
-import traceback
 
+class QQImagePath(Exception):
+    """
+    raise qq image url from 302 redirect.
+    """
+    def __init__(self, path):
+        Exception.__init__(self, path)
+        self.path = path
+
+class RedirctHandler(urllib2.HTTPRedirectHandler):
+
+    def http_error_301(self, req, fp, code, msg, headers):
+        pass
+
+    def http_error_302(self, req, fp, code, msg, headers):
+        """
+        found and return user upload image sever path
+
+        """
+
+        if 'Location' in headers and ':80/?ver=' in headers['Location']:
+           raise GetImagePath(headers['Location'])
 
 class Http:
     
-    def __init__(self,open_cookie = True,cookie_path="",proxy={}):
+    def __init__(self, open_cookie=True, cookie_path="", proxy={}):
 
         self.open_cookie = open_cookie
         self.cookie_path = cookie_path
-#        """
+
         if open_cookie:
             self.cookieJar = cookielib.LWPCookieJar()
             if cookie_path:
@@ -26,19 +51,17 @@ class Http:
                     self.cookieJar.load(cookie_path)
                 except:
                     pass
-            #else:
-            #    self.cookieJar = cookielib.CookieJar()
-            self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookieJar))
+            else:
+                self.cookieJar = cookielib.CookieJar()
+            self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookieJar), RedirctHandler)
             urllib2.install_opener(self.opener)
-#        """
-        
-        self.web_headers={"User-Agent":"Mozilla/5.0 (Windows NT 6.2; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1",
-                "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "zh-CN,zh;q=0.8",
-                 }
+
+        self.web_headers={"User-Agent": "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1",
+                          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                          "Accept-Language": "zh-CN,zh;q=0.8",}
         
         self.wap_headers = {'Content-type': 'application/x-www-form-urlencoded',
-            'Accept': 'text/plain'}
+                            'Accept': 'text/plain'}
 
         self.headers = self.web_headers
         self.res = None
@@ -49,19 +72,16 @@ class Http:
         self.timeout = 0
         self.try_again = 0
 
-    def set_tryagain(self,count):
-
+    def set_tryagain(self, count):
         self.try_again = count
 
     def get_resheader(self):
-
         return self.res_headers
 
     def get_rescookies(self):
-
         return self.res_cookies
 
-    def set_timeout(self,timeout):
+    def set_timeout(self, timeout):
 
         self.timeout = timeout
 
@@ -73,7 +93,7 @@ class Http:
 
         self.headers = self.web_headers
 
-    def add_header(self,key,value):
+    def add_header(self,key, value):
 
         self.headers[key] = value
 
@@ -83,9 +103,9 @@ class Http:
         proxy_support = urllib2.ProxyHandler(proxy_dict)
         opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler)
         urllib2.install_opener(opener)
-        
 
-    def connect(self,url,post_data="",encoding="UTF-8",timeout=0,remove_charentity=True,try_again=1):
+
+    def connect(self, url, post_data="", encoding="UTF-8", timeout=0, remove_charentity=True, try_again=1):
         """
 
         @type url:string
@@ -100,7 +120,7 @@ class Http:
         """
 
         
-        if isinstance(post_data,dict):
+        if isinstance(post_data, dict):
             post_data = urllib.urlencode(post_data)
 
 #        elif post_data:
@@ -117,10 +137,10 @@ class Http:
                 print e
         """
         if post_data:
-            req = urllib2.Request(url,post_data,headers = self.headers)
+            req = urllib2.Request(url, post_data, headers=self.headers)
 
         else:
-            req = urllib2.Request(url,headers = self.headers)
+            req = urllib2.Request(url, headers=self.headers)
 
         if self.try_again:
             try_again = self.try_again
@@ -128,9 +148,9 @@ class Http:
         for i in range(try_again):
             try:
                 if timeout:
-                    res = urllib2.urlopen(req,timeout=timeout)
+                    res = urllib2.urlopen(req, timeout=timeout)
                 elif self.timeout:
-                    res = urllib2.urlopen(req,timeout=self.timeout)
+                    res = urllib2.urlopen(req, timeout=self.timeout)
                 else:
                     res = urllib2.urlopen(req)
 
@@ -139,7 +159,7 @@ class Http:
                 self.res_content = res.read()
                 break
             except Exception,e:
-                err = u"%s:%s\nurl:%s \n"%(__name__,str(e),url)
+                err = u"%s:%s\nurl:%s \n"%(__name__, str(e),url)
                 if post_data:
                     err += "post data: %s\n"%str(post_data)
                 print err
@@ -150,7 +170,7 @@ class Http:
             self.res_content = self.remove_charentity(self.res_content)
 
         if encoding:
-            self.res_content = self.res_content.decode(encoding,"ignore")
+            self.res_content = self.res_content.decode(encoding, "ignore")
             data = repr(self.res_content)
             data = data.replace("\\xa0"," ")
             self.res_content = eval(data)
@@ -166,7 +186,7 @@ class Http:
         return self.res_content
 
 
-    def file_open(self,path, method = 'r', content = ''):
+    def file_open(self, path, method='r', content=''):
         """
         open a file,read or write
 
@@ -181,16 +201,17 @@ class Http:
 
         """
 
-        f = open(path,method)
+        f = open(path, method)
         if method == 'r' or method =="rb": 
             data = f.read()
             f.close()
             return data
-        elif  method == 'w' or method == 'a' or method == "wb": 
+        elif method == 'w' or method == 'a' or method == "wb":
             f.write(content)
         f.close()
 
-    def get_substring(self,start_string,end_string,data,contain_startstring=False,contain_endstring=False):
+    def get_substring(self, start_string, end_string,
+                      data, contain_startstring=False, contain_endstring=False):
 
         if not start_string:
             pos0 = 0
@@ -203,11 +224,11 @@ class Http:
             if not contain_startstring:
                 pos0 += len(start_string)
 
-        data=data[pos0:]
+        data = data[pos0:]
         if not end_string:
             pos1 = len(data)
         else:
-            pos1=data.find(end_string)
+            pos1 = data.find(end_string)
 
         if -1 == pos1:
             return None
@@ -215,11 +236,10 @@ class Http:
         if contain_endstring:
             pos1 += len(end_string)
 
-        data=data[:pos1]
+        data = data[:pos1]
 
         return data
-
-    def str2dic(self,string):
+    def str2dic(self, string):
         """
         convert post data string to a dict
         @param string:post data string
@@ -228,23 +248,22 @@ class Http:
         @return:a dict of the converted post data string 
         @rtype dic:dict
         """
-        dic={}
+        dic = {}
         list0=string.split("&")
         for i in list0:
-            list2=i.split("=")
-            dic[list2[0]]=list2[1]
+            list2 = i.split("=")
+            dic[list2[0]] = list2[1]
         return dic
     
-    def quote(self,content):
+    def quote(self, content):
 
         return urllib.quote(content)
 
-    def unquote(self,content):
+    def unquote(self, content):
 
         return urllib.unquote(content)
 
-
-    def get_form(self,data,tag="postfield",encoding="utf8"):
+    def get_form(self, data, tag="postfield", encoding="utf8"):
         """
         get the form from data
 
@@ -260,51 +279,59 @@ class Http:
         @return:post data
         @rtype param:
         """
-        param={}
+        param = {}
         field_list=re.findall(tag + ".*? name=\"(.*?)\".*?value=\"(.*?)\"",data)
 
         for i in field_list:
-            param[i[0]]=i[1].encode(encoding) 
+            param[i[0]] = i[1].encode(encoding)
 
         return param
 
-    
-    def remove_charentity(self,html):
+    def remove_charentity(self, html):
 
-        charentity_dict = {"&nbsp;": "jj", "&lt;": "<","&gt;": ">", "&amp;": "&", "&quot;": "\"",
-                "&apos;": "'", "&plusmn;": "+", 
-                }
+        charentity_dict = {"&nbsp;": "jj",
+                           "&lt;": "<",
+                           "&gt;": ">",
+                           "&amp;": "&",
+                           "&quot;": "\"",
+                            "&apos;": "'",
+                           "&plusmn;": "+"}
 
         for i in charentity_dict:
             try:
-                html = html.replace(i,charentity_dict[i])
+                html = html.replace(i, charentity_dict[i])
             except:
-#                print html
                 print i
         
         def func(m):
 
             entity_ascii = int(m.group(1))
-#            print entity_ascii
+
             if entity_ascii < 256:
                 return chr(entity_ascii)
             else:
                 return ""
 
-        html = re.sub("&#(\d+);",func,html)
+        html = re.sub("&#(\d+);", func, html)
 
         return html
 
-    def change2charentity(self,string):
+    def change2charentity(self, string):
 
         string = string.replace("&","&amp;")
-        charentity_dict = {"'":"&apos;", "\"":"&quot;", u"\u0020":"&nbsp;", "<":"&lt;", ">":"&gt;","+": "&plusmn;"}
+        charentity_dict = {"'": "&apos;",
+                           "\"": "&quot;",
+                           u"\u0020": "&nbsp;",
+                           "<": "&lt;",
+                           ">": "&gt;",
+                           "+": "&plusmn;"}
+
         for i in charentity_dict:
             string = string.replace(i,charentity_dict[i])
 
         return string
 
-    def html2txt(self,html):
+    def html2txt(self, html):
         """
         @param html: html string
         @type: string
@@ -349,21 +376,20 @@ class Http:
 
         html = self.remove_charentity(html)
 
-
         return html
 
-    def txt2html(self,txt):
+    def txt2html(self, txt):
 
         html = self.change2charentity(txt)
-        html = html.replace("\n","<br/>")
+        html = html.replace("\n", "<br/>")
 
         return html
 
-    def _get_tag_attrs(self,tag,tag_html):
+    def _get_tag_attrs(self, tag, tag_html):
 
-        tag_html = re.findall("<%s[^>]*?>"%tag,tag_html)[0]
+        tag_html = re.findall("<%s[^>]*?>"%tag, tag_html)[0]
 #        print tag_html
-        attrs_list = re.findall("\s*(\S*)\s*=\s*[\"'](.*?)[\"']\s*",tag_html)#get attributes
+        attrs_list = re.findall("\s*(\S*)\s*=\s*[\"'](.*?)[\"']\s*", tag_html)#get attributes
 #        print attrs_list
         _attrs = {}
         for key in attrs_list:
@@ -371,13 +397,13 @@ class Http:
 
         return _attrs
 
-    def get_start_tag(self,html,tag,attrs={}):
+    def get_start_tag(self, html, tag, attrs={}):
 
-        result = re.findall("<%s[^>]*?>"%tag,html)
+        result = re.findall("<%s[^>]*?>"%tag, html)
 #        print result
         start_tag_list = []
         for i in result:
-             
+
             _attrs = self._get_tag_attrs(tag,i)
 
             #print _attrs
@@ -396,7 +422,7 @@ class Http:
 
         return start_tag_list
 
-    def get_tag_html(self,html,tag,attrs={}):
+    def get_tag_html(self, html, tag, attrs={}):
         """
         @param html: html string
         @type: str
@@ -412,7 +438,7 @@ class Http:
         result_list = []
         end_tag = "</%s>"%tag
 
-        def get_end_tag_pos(start_pos,end_pos):
+        def get_end_tag_pos(start_pos, end_pos):
 
 #            print html[start_pos:end_pos]
             tag_count = html[start_pos + 1:end_pos].count("<"+tag)
@@ -431,7 +457,7 @@ class Http:
 
         start_tag_pos = -1 
         for i in start_tag:
-            start_tag_pos = html.find(i,start_tag_pos + 1)
+            start_tag_pos = html.find(i, start_tag_pos+1)
 #            print start_tag_pos
                 
             """ <div class="wgt-best "> <div class="class"> <div>div</div></div><div>div2</div> </div>"""
@@ -448,7 +474,7 @@ class Http:
 
         return result_list
 
-    def get_tag_attrs(self,html,tag,attrs={}):
+    def get_tag_attrs(self, html, tag, attrs={}):
         """
         @param html:html
         @type html:string
@@ -463,17 +489,17 @@ class Http:
         @rtype: list
         """
         
-        tag_html_list = self.get_tag_html(html,tag,attrs)
+        tag_html_list = self.get_tag_html(html, tag, attrs)
         _attrs = []
         
         for i in tag_html_list:
-            _attrs.append(self._get_tag_attrs(tag,i))
+            _attrs.append(self._get_tag_attrs(tag, i))
 
         return _attrs
 
-    def remove_tag(self,html,tag,attrs={}):
+    def remove_tag(self, html, tag, attrs={}):
 
-        tag_html_list = self.get_tag_html(html,tag,attrs)
+        tag_html_list = self.get_tag_html(html, tag, attrs)
         
         result_html = html
         for i in tag_html_list:
