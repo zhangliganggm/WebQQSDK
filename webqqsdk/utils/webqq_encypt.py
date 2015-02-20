@@ -3,18 +3,18 @@
 import hashlib
 
 class b:
-    def __init__(self, b, i):
+    def __init__(self,b,i):
         self.s = b or 0
         self.e = i or 0
 
 class Encypt:
 
-    def encyptPwd(self, password, verifycode, uin):
+    def encyptPwd(self,password, verifycode, uin):
     
         def md5_hex(s):
             m = hashlib.md5(s)
             return m.hexdigest()
-
+        
         def md5_bin(s):
             m = hashlib.md5(s)
             return m.digest() 
@@ -25,7 +25,7 @@ class Encypt:
         r = md5_hex(r).upper()
         return r
     
-    def getHash(self, b, j):
+    def getHash(self,b,j):
 
         a = j + "password error"
         i = ""
@@ -51,10 +51,56 @@ class Encypt:
             c += 1
         return i
 
-    def getHash2014613225627(self, i, a):
-
+    def getHash2014613225627(self,i,a):
+        """
+        var r=[];
+        r[0]=i>>24&255;
+        r[1]=i>>16&255;
+        r[2]=i>>8&255;
+        r[3]=i&255;
+        """
         r = [int(i) >> 24 & 255,int(i) >>16 & 255,int(i) >> 8 & 255,int(i) & 255]
+        """
+        for(var j=[],e=0;e<a.length;++e){
+            j.push(a.charCodeAt(e));
+        }
+P=function(i,a)
+{
+    var j=[];
+    j[0]=i>>24&255;
+    j[1]=i>>16&255;
+    j[2]=i>>8&255;
+    j[3]=i&255;
+    for(var s=[],e=0;e<a.length;++e)
+        s.push(a.charCodeAt(e));
+    e=[];
+    for(e.push(new b(0,s.length-1));e.length>0;)
+    {
+        var c=e.pop();
+        if(!(c.s>=c.e||c.s<0||c.e>=s.length))
+            if(c.s+1==c.e){if(s[c.s]>s[c.e])
+            {
+                var J=s[c.s];
+                s[c.s]=s[c.e];
+                s[c.e]=J
+            }
+    }
+  else
+  {
+        for(var J=c.s,l=c.e,f=s[c.s];c.s<c.e;)
+        {
+            for(;c.s<c.e&&s[c.e]>=f;)
+                c.e--,j[0]=j[0]+3&255;
+                
+            c.s<c.e&&(s[c.s]=s[c.e],c.s++,
+            j[1]=j[1]*13+43&255);
+            for(;c.s<c.e&&s[c.s]<=f;)c.s++,j[2]=j[2]-3&255;c.s<c.e&&(s[c.e]=s[c.s],c.e--,j[3]=(j[0]^j[1]^j[2]^j[3]+1)&255)}s[c.s]=f;e.push(new b(J,c.s-1));e.push(new b(c.s+1,l))}}s=["0","1","2","3","4",
+"5","6","7","8","9","A","B","C","D","E","F"];e="";for(c=0;c<j.length;c++)e+=s[j[c]>>4&15],e+=s[j[c]&15];return e}
+        """
         j = [ord(a[i]) for i in range(len(a))]
+        """
+        for(e.push(new b(0,j.length-1));e.length>0;){
+        """
         e = [b(0,len(j) - 1)]
         while len(e) > 0:
             """
@@ -126,7 +172,8 @@ class Encypt:
             e += j[r[i] & 15]
         return e
 
-    def getHash20140409(self, b, i):
+
+    def getHash20140409(self,b,i):
 
         """
         2014,4,9,13:08:45
@@ -166,7 +213,8 @@ class Encypt:
             d+=a[j[s]&15]
         return d
             
-    def getHash_old(self, b, i):
+
+    def getHash_old(self,b,i):
         """
         @param b:qq
         @param i:ptwebqq
@@ -201,7 +249,7 @@ class Encypt:
 
         return d 
 
-    def get_gtk(self, skey):
+    def get_gtk(self,skey):
 
         hash = 5381
         for i in range(len(skey)):
@@ -209,9 +257,11 @@ class Encypt:
 
         return hash & 2147483647
     
+
+
 if "__main__" == __name__:
 
     test = Encypt()
     print test.get_gtk("@GqJ9ZOwn4")
-    #print test.getHash("1234567","4132421351")
+#    print test.getHash("1234567","4132421351")
     print test.encyptPwd("","!yx03","")
